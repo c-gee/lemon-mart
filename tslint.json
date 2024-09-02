@@ -1,7 +1,6 @@
 {
   "extends": [
-    null,
-    "tslint-etc"
+    "eslint-plugin-etc"
   ],
   "rules": {
     "no-unused-declaration": true,
