@@ -2,6 +2,7 @@ import { Component } from '@angular/core'
 import { MatButtonModule } from '@angular/material/button'
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon'
 import { MatToolbarModule } from '@angular/material/toolbar'
+import { MatTooltipModule } from '@angular/material/tooltip'
 import { DomSanitizer } from '@angular/platform-browser'
 import { RouterLink, RouterOutlet } from '@angular/router'
 import { FlexModule } from '@ngbracket/ngx-layout/flex'
@@ -13,6 +14,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex'
     RouterOutlet,
     RouterLink,
     MatToolbarModule,
+    MatTooltipModule,
     MatButtonModule,
     MatIconModule,
     FlexModule,
@@ -27,10 +29,20 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex'
         <span class="left-pad">LemonMart</span>
       </a>
       <span class="flex-spacer"></span>
-      <button mat-icon-button>
+      <button
+        mat-mini-fab
+        routerLink="/user/profile"
+        matTooltip="Profile"
+        aria-label="User Profile"
+      >
         <mat-icon>account_circle</mat-icon>
       </button>
-      <button mat-icon-button>
+      <button
+        mat-mini-fab
+        routerLink="/user/logout"
+        matTooltip="Logout"
+        aria-label="Logout"
+      >
         <mat-icon>lock_open</mat-icon>
       </button>
     </mat-toolbar>
