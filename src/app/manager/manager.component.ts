@@ -1,7 +1,9 @@
 import { Component } from '@angular/core'
 import { MatButtonModule } from '@angular/material/button'
+import { MatIconModule } from '@angular/material/icon'
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router'
+import { FlexModule } from '@ngbracket/ngx-layout/flex'
 
 @Component({
   selector: 'app-manager',
@@ -12,6 +14,8 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router'
     RouterLinkActive,
     MatToolbarModule,
     MatButtonModule,
+    MatIconModule,
+    FlexModule,
   ],
   template: `
     <mat-toolbar color="accent" fxLayoutGap="8px">
@@ -24,6 +28,18 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router'
       <a mat-button routerLink="receipts" routerLinkActive="active-link">
         Receipt Lookup
       </a>
+      <span class="flex-spacer"></span>
+      <button
+        mat-mini-fab
+        routerLink="/inventory"
+        matTooltip="Inventory"
+        aria-label="Inventory"
+      >
+        <mat-icon>list</mat-icon>
+      </button>
+      <button mat-mini-fab routerLink="/pos" matTooltip="POS" aria-label="POS">
+        <mat-icon>shopping_cart</mat-icon>
+      </button>
     </mat-toolbar>
     <router-outlet></router-outlet>
   `,
