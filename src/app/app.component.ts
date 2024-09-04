@@ -26,7 +26,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex'
       </button>
       <a mat-icon-button routerLink="/home">
         <mat-icon svgIcon="lemon"></mat-icon>
-        <span class="left-pad">LemonMart</span>
+        <span class="left-pad" data-testid="title">LemonMart</span>
       </a>
       <span class="flex-spacer"></span>
       <button

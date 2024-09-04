@@ -1,13 +1,16 @@
-import { TestBed } from '@angular/core/testing'
+import { TestBed, waitForAsync } from '@angular/core/testing'
+import { getNativeElementByTestId } from 'angular-unit-test-helper'
 
 import { AppComponent } from './app.component'
+import { commonTestingModules, commonTestingProviders } from './common/common.testing'
 
 describe('AppComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [AppComponent],
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [...commonTestingModules, AppComponent],
+      providers: [...commonTestingProviders],
     }).compileComponents()
-  })
+  }))
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent)
@@ -18,7 +21,7 @@ describe('AppComponent', () => {
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent)
     fixture.detectChanges()
-    const compiled = fixture.nativeElement as HTMLElement
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, lemon-mart')
+    const titleElement = getNativeElementByTestId(fixture, 'title')
+    expect(titleElement.textContent).toContain('LemonMart')
   })
 })

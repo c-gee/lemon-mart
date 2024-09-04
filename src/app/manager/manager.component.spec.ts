@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
+import { commonTestingProviders } from '../common/common.testing'
 import { ManagerComponent } from './manager.component'
 
 describe('ManagerComponent', () => {
@@ -9,6 +10,7 @@ describe('ManagerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ManagerComponent],
+      providers: [...commonTestingProviders],
     }).compileComponents()
 
     fixture = TestBed.createComponent(ManagerComponent)
