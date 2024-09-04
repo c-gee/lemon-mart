@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { PosComponent } from './pos.component'
+import { StockEntryComponent } from './stock-entry.component'
 
-describe('PosComponent', () => {
-  let component: PosComponent
-  let fixture: ComponentFixture<PosComponent>
+describe('StockEntryComponent', () => {
+  let component: StockEntryComponent
+  let fixture: ComponentFixture<StockEntryComponent>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PosComponent],
+      imports: [StockEntryComponent],
     }).compileComponents()
 
-    fixture = TestBed.createComponent(PosComponent)
+    fixture = TestBed.createComponent(StockEntryComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   })

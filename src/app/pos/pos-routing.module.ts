@@ -1,17 +1,17 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core'
+import { RouterModule, Routes } from '@angular/router'
 
-import { PosComponent } from './pos.component';
+import { PosComponent } from './pos.component'
 
 const routes: Routes = [
   {
     path: '',
-    component: PosComponent
-  }
-];
+    component: PosComponent,
+  },
+]
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class PosRoutingModule { }
+export class PosRoutingModule {}
