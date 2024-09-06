@@ -4,6 +4,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideRouter } from '@angular/router'
 
 import { routes } from './app.routes'
+import { InMemoryAuthService } from './auth/auth.in-memory.service'
+import { AuthService } from './auth/auth.service'
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -11,5 +13,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideRouter(routes),
     provideAnimationsAsync(),
+    {
+      provide: AuthService,
+      useClass: InMemoryAuthService,
+    },
   ],
 }
