@@ -1,7 +1,9 @@
+import { inject } from '@angular/core'
 import { jwtDecode as decode } from 'jwt-decode'
 import { BehaviorSubject, Observable, throwError } from 'rxjs'
 import { catchError, filter, map, mergeMap, tap } from 'rxjs/operators'
 
+import { CacheService } from '../common/cache.service'
 import { transformError } from '../common/common'
 import { IUser, User } from '../user/user/user'
 import { Role } from './auth.enum'
@@ -31,10 +33,18 @@ export interface IAuthService {
 }
 
 export abstract class AuthService implements IAuthService {
-  readonly authStatus$ = new BehaviorSubject<IAuthStatus>(defaultAuthStatus)
+  protected readonly cache = inject(CacheService)
+
+  readonly authStatus$ = new BehaviorSubject<IAuthStatus>(
+    this.cache.getItem('authStatus') ?? defaultAuthStatus
+  )
   readonly currentUser$ = new BehaviorSubject<IUser>(new User())
 
-  constructor() {}
+  constructor() {
+    this.authStatus$.pipe(
+      tap((authStatus) => this.cache.setItem('authStatus', authStatus))
+    )
+  }
 
   protected abstract authProvider(
     email: string,
