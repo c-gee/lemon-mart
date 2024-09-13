@@ -7,6 +7,7 @@ import { routes } from './app.routes'
 import { AuthHttpInterceptor } from './auth/auth.http.interceptor'
 import { InMemoryAuthService } from './auth/auth.in-memory.service'
 import { AuthService } from './auth/auth.service'
+import { provideUiService } from './common/ui.service'
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,5 +19,6 @@ export const appConfig: ApplicationConfig = {
       provide: AuthService,
       useClass: InMemoryAuthService,
     },
+    provideUiService(),
   ],
 }
