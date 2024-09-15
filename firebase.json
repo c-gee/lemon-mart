@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "dist/lemon-mart/browser",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
