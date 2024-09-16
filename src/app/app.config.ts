@@ -6,7 +6,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideRouter } from '@angular/router'
 
 import { routes } from './app.routes'
-import { FirebaseAuthService } from './auth/auth.firebase.service'
+import { authFactory } from './auth/auth.factory'
 import { AuthHttpInterceptor } from './auth/auth.http.interceptor'
 import { AuthService } from './auth/auth.service'
 import { provideUiService } from './common/ui.service'
@@ -19,7 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     {
       provide: AuthService,
-      useClass: FirebaseAuthService,
+      useFactory: authFactory,
     },
     provideUiService(),
     provideFirebaseApp(() =>

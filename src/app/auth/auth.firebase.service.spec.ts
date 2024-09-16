@@ -24,10 +24,10 @@ describe('FirebaseAuthService', () => {
     service = TestBed.inject(FirebaseAuthService)
   })
 
-  it(
-    'should be created',
-    inject([FirebaseAuthService], (service: FirebaseAuthService) => {
+  it('should be created', inject(
+    [FirebaseAuthService],
+    (service: FirebaseAuthService) => {
       expect(service).toBeTruthy()
-    }),
-  )
+    }
+  ))
 })

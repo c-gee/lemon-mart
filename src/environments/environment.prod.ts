@@ -1,7 +1,7 @@
 import { AuthMode } from '../app/auth/auth.enum'
 
 export const environment = {
-  production: false,
+  production: true,
   baseUrl: 'http://localhost:3000',
-  authMode: AuthMode.InMemory,
+  authMode: AuthMode.Firebase,
 }
