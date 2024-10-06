@@ -9,29 +9,19 @@ import { MatIconModule } from '@angular/material/icon'
 import { MatInputModule } from '@angular/material/input'
 import { ActivatedRoute, Router } from '@angular/router'
 import { FlexModule } from '@ngbracket/ngx-layout/flex'
-import { catchError, combineLatest } from 'rxjs'
-import { filter, first, tap } from 'rxjs/operators'
+import { combineLatest } from 'rxjs'
+import { catchError, filter, first, tap } from 'rxjs/operators'
 
-import { Role } from '../auth/auth.enum'
+import { environment } from '../../environments/environment'
+import { AuthMode, Role } from '../auth/auth.enum'
 import { AuthService } from '../auth/auth.service'
 import { UiService } from '../common/ui.service'
 import { EmailValidation, PasswordValidation } from '../common/validations'
+import { FieldErrorDirective } from '../user-controls/field-error/field-error.directive'
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    FlexModule,
-    MatCardModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatExpansionModule,
-    MatGridListModule,
-  ],
-  templateUrl: './login.component.html',
+  templateUrl: 'login.component.html',
   styles: `
     .error {
       color: red;
@@ -40,6 +30,19 @@ import { EmailValidation, PasswordValidation } from '../common/validations'
       margin-top: 32px;
     }
   `,
+  standalone: true,
+  imports: [
+    FlexModule,
+    MatCardModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FieldErrorDirective,
+    MatButtonModule,
+    MatExpansionModule,
+    MatGridListModule,
+  ],
 })
 export class LoginComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder)
@@ -50,12 +53,15 @@ export class LoginComponent implements OnInit {
 
   loginForm!: FormGroup
   loginError = ''
+  roles = Object.keys(Role)
+  authMode = environment.authMode
+  AuthMode = AuthMode
 
   get redirectUrl() {
     return this.route.snapshot.queryParamMap.get('redirectUrl') || ''
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.authService.logout()
     this.buildLoginForm()
   }
@@ -77,7 +83,9 @@ export class LoginComponent implements OnInit {
         filter(([authStatus, user]) => authStatus.isAuthenticated && user?._id !== ''),
         first(),
         tap(([authStatus, user]) => {
-          this.uiService.showToast(`Welcome ${user.fullName}! Role: ${user.role}`)
+          this.uiService.showToast(
+            `Welcome ${user.fullName}! Role: ${authStatus.userRole}`
+          )
           this.router.navigate([
             this.redirectUrl || this.homeRoutePerRole(user.role as Role),
           ])
