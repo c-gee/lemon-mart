@@ -1,0 +1,59 @@
+<mat-toolbar color="accent">
+  <h5>User Profile</h5>
+</mat-toolbar>
+<mat-horizontal-stepper #stepper="matHorizontalStepper">
+  <mat-step [stepControl]="formGroup">
+    <form [formGroup]="formGroup">
+      <ng-template matStepLabel>Account Information</ng-template>
+      <div class="stepContent">
+        <div formGroupName="name">
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
+            <mat-form-field appearance="outline" fxFlex="40%">
+              <mat-label>First Name</mat-label>
+              <input matInput placeholder="First Name" aria-label="First Name"
+                formControlName="first" />
+              @if (formGroup.get('name.first')?.hasError('required'))
+              {
+              <mat-error>First name is required</mat-error>
+              }
+              @if (formGroup.get('name.first')?.hasError('minLength'))
+              {
+              <mat-error>Must be at least 2 characters</mat-error>
+              }
+              @if (formGroup.get('name.first')?.hasError('maxLength'))
+              {
+              <mat-error>Can't exceed 50 characters</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="20%">
+              <mat-label>MI</mat-label>
+              <input matInput placeholder="MI" aria-label="Middle Initial"
+                formControlName="middle" />
+              @if (formGroup.get('name.middle')?.hasError('invalid'))
+              {
+              <mat-error>Only initial</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="40%">
+              <mat-label>Last Name</mat-label>
+              <input matInput placeholder="Last Name" aria-label="Last Name"
+                formControlName="last" />
+              @if (formGroup.get('name.last')?.hasError('required'))
+              {
+              <mat-error>Last name is required</mat-error>
+              }
+              @if (formGroup.get('name.last')?.hasError('minLength'))
+              {
+              <mat-error>Must be at least 2 characters</mat-error>
+              }
+              @if (formGroup.get('name.last')?.hasError('maxLength'))
+              {
+              <mat-error>Can't exceed 50 characters</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-step>
+</mat-horizontal-stepper>

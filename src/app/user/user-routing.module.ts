@@ -3,12 +3,12 @@ import { RouterModule, Routes } from '@angular/router'
 
 import { authGuard } from '../auth/auth.guard'
 import { LogoutComponent } from './logout/logout.component'
-import { ProfileComponent } from './profile/profile.component'
+import { ProfileInitialComponent } from './profile/profile.initial.component'
 
 const routes: Routes = [
   {
     path: 'profile',
-    component: ProfileComponent,
+    component: ProfileInitialComponent,
     canActivate: [authGuard],
   },
   {
