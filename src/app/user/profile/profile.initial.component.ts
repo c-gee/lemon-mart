@@ -28,6 +28,10 @@ import {
   RequiredTextValidation,
   USAZipCodeValidation,
 } from '../../common/validations'
+import {
+  ErrorSets,
+  FieldErrorDirective,
+} from '../../user-controls/field-error/field-error.directive'
 import { IUser, PhoneType } from '../user/user'
 import { UserService } from '../user/user.service'
 import { IUSState } from './data'
@@ -55,9 +59,11 @@ import { IUSState } from './data'
     MatToolbarModule,
     FlexModule,
     ReactiveFormsModule,
+    FieldErrorDirective,
   ],
 })
 export class ProfileInitialComponent implements OnInit {
+  ErrorSets = ErrorSets
   Role = Role
   PhoneType = PhoneType
   PhoneTypes = $enum(PhoneType).getKeys()

@@ -10,31 +10,20 @@
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
           <mat-icon>email</mat-icon>
           <mat-form-field fxFlex>
-            <input matInput placeholder="E-mail" aria-label="E-mail"
-              formControlName="email" #email />
-            @if (loginForm.get('email')?.hasError('required')) {
-            <mat-error> E-mail is required </mat-error>
-            }
-            @if (loginForm.get('email')?.hasError('email')) {
-            <mat-error> E-mail is not valid </mat-error>
-            }
+            <input #email matInput placeholder="E-mail" aria-label="E-mail"
+              formControlName="email" />
+            <mat-error [input]="email" [group]="loginForm"
+              appFieldError="invalid"></mat-error>
           </mat-form-field>
         </div>
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
           <mat-icon matPrefix>vpn_key</mat-icon>
           <mat-form-field fxFlex>
-            <input matInput placeholder="Password" aria-label="Password" type="password"
-              formControlName="password" #password />
+            <input #password matInput placeholder="Password" aria-label="Password"
+              type="password" formControlName="password" />
             <mat-hint>Minimum 8 characters</mat-hint>
-            @if (loginForm.get('password')?.hasError('required')) {
-            <mat-error> Password is required </mat-error>
-            }
-            @if (loginForm.get('password')?.hasError('minlength')) {
-            <mat-error> Password is at least 8 characters long </mat-error>
-            }
-            @if (loginForm.get('password')?.hasError('maxlength')) {
-            <mat-error> Password cannot be longer than 50 characters </mat-error>
-            }
+            <mat-error [input]="password" [group]="loginForm"
+              [appFieldError]="['required', 'minLength', 'maxLength']"></mat-error>
           </mat-form-field>
         </div>
         <div fxLayout="row" class="top-pad">
@@ -96,13 +85,10 @@
                   {{ role.toLowerCase() }}&#64;test.com
                   }
                   <button mat-button (click)="
-                          this.loginForm.patchValue({
-                            email: role.toLowerCase() + '@test.com',
-                            password: 'whatever'
-                          })
-                        ">
-                    Fill
-                  </button>
+                      this.loginForm.patchValue({
+                        email: role.toLowerCase() + '@test.com',
+                        password: 'whatever'
+                      })">Fill</button>
                 </div>
               </mat-grid-tile>
             </div>

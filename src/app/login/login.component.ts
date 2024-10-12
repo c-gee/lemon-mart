@@ -17,6 +17,10 @@ import { AuthMode, Role } from '../auth/auth.enum'
 import { AuthService } from '../auth/auth.service'
 import { UiService } from '../common/ui.service'
 import { EmailValidation, PasswordValidation } from '../common/validations'
+import {
+  ErrorSets,
+  FieldErrorDirective,
+} from '../user-controls/field-error/field-error.directive'
 
 @Component({
   selector: 'app-login',
@@ -40,6 +44,7 @@ import { EmailValidation, PasswordValidation } from '../common/validations'
     MatButtonModule,
     MatExpansionModule,
     MatGridListModule,
+    FieldErrorDirective,
   ],
 })
 export class LoginComponent implements OnInit {
@@ -54,6 +59,7 @@ export class LoginComponent implements OnInit {
   roles = Object.keys(Role)
   authMode = environment.authMode
   AuthMode = AuthMode
+  ErrorSets = ErrorSets
 
   get redirectUrl() {
     return this.route.snapshot.queryParamMap.get('redirectUrl') || ''
