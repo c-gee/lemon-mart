@@ -71,6 +71,12 @@ export class ProfileInitialComponent implements OnInit {
   states$!: Observable<IUSState[]>
   userError = ''
   currentUserId!: string
+  now = new Date()
+  minDate = new Date(
+    this.now.getFullYear() - 100,
+    this.now.getMonth(),
+    this.now.getDate()
+  )
 
   private destroyRef = inject(DestroyRef)
 
@@ -99,6 +105,14 @@ export class ProfileInitialComponent implements OnInit {
     return this.authService.authStatus$.value.userRole
   }
 
+  get dateOfBirth() {
+    return this.formGroup.get('dateOfBirth')?.value || this.now
+  }
+
+  get age() {
+    return this.now.getFullYear() - this.dateOfBirth.getFullYear()
+  }
+
   buildForm(user?: IUser) {
     this.formGroup = this.formBuilder.group({
       email: [
@@ -120,7 +134,7 @@ export class ProfileInitialComponent implements OnInit {
         },
         [Validators.required],
       ],
-      dateOfBirth: [user?.dateOfBirth || '', Validators.required],
+      dateOfBirth: [(user && user?.dateOfBirth) || '', Validators.required],
       address: this.formBuilder.group({
         line1: [user?.address?.line1 || '', RequiredTextValidation],
         line2: [user?.address?.line2 || '', OptionalTextValidation],

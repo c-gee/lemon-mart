@@ -29,7 +29,32 @@
               <mat-error [input]="last" [group]="formGroup"
                 [appFieldError]="ErrorSets['RequiredText']"></mat-error>
             </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="50%">
+              <mat-label>E-mail</mat-label>
+              <input #email matInput aria-label="E-mail" formControlName="email" />
+              <mat-hint>Only your manager can update your e-mail.</mat-hint>
+              <mat-error [input]="email" [group]="formGroup"
+                appFieldError="invalid"></mat-error>
+            </mat-form-field>
           </div>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
+          <mat-form-field appearance="outline" fxFlex="50%">
+            <mat-label>Date of Birth</mat-label>
+            <input #dob matInput aria-label="Date of Birth"
+              formControlName="dateOfBirth" [min]="minDate" [max]="now"
+              [matDatepicker]="dateOfBirthPicker">
+            @if (formGroup.get('dateOfBirth')?.value) {
+            <mat-hint>{{ age }} year(s) old</mat-hint>
+            }
+            <mat-datepicker-toggle matSuffix
+              [for]="dateOfBirthPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dateOfBirthPicker></mat-datepicker>
+            <mat-error [input]="dob" [group]="formGroup" [appFieldError]="{
+            error: 'invalid',
+            message: 'Date must be within the last 100 years'
+          }"></mat-error>
+          </mat-form-field>
         </div>
       </div>
     </form>
