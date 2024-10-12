@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common'
 import { Component, DestroyRef, OnInit, inject } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
@@ -15,7 +16,7 @@ import { MatStepperModule } from '@angular/material/stepper'
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { FlexModule } from '@ngbracket/ngx-layout'
 import { Observable } from 'rxjs'
-import { filter, tap } from 'rxjs/operators'
+import { filter, map, startWith, tap } from 'rxjs/operators'
 import { $enum } from 'ts-enum-util'
 
 import { Role } from '../../auth/auth.enum'
@@ -34,7 +35,7 @@ import {
 } from '../../user-controls/field-error/field-error.directive'
 import { IUser, PhoneType } from '../user/user'
 import { UserService } from '../user/user.service'
-import { IUSState } from './data'
+import { IUSState, USStateFilter } from './data'
 
 @Component({
   selector: 'app-profile-initial',
@@ -60,6 +61,7 @@ import { IUSState } from './data'
     FlexModule,
     ReactiveFormsModule,
     FieldErrorDirective,
+    AsyncPipe,
   ],
 })
 export class ProfileInitialComponent implements OnInit {
@@ -136,12 +138,30 @@ export class ProfileInitialComponent implements OnInit {
       ],
       dateOfBirth: [(user && user?.dateOfBirth) || '', Validators.required],
       address: this.formBuilder.group({
-        line1: [user?.address?.line1 || '', RequiredTextValidation],
-        line2: [user?.address?.line2 || '', OptionalTextValidation],
-        city: [user?.address?.city || '', RequiredTextValidation],
-        state: [user?.address?.state || '', RequiredTextValidation],
-        zip: [user?.address?.zip || '', USAZipCodeValidation],
+        line1: [
+          (user && user.address && user.address.line1) || '',
+          RequiredTextValidation,
+        ],
+        line2: [
+          (user && user.address && user.address.line2) || '',
+          OptionalTextValidation,
+        ],
+        city: [(user && user.address && user.address.city) || '', RequiredTextValidation],
+        state: [
+          (user && user.address && user.address.state) || '',
+          RequiredTextValidation,
+        ],
+        zip: [(user && user.address && user.address.zip) || '', USAZipCodeValidation],
       }),
     })
+
+    const state = this.formGroup.get('address.state')
+
+    if (state !== null) {
+      this.states$ = state.valueChanges.pipe(
+        startWith(''),
+        map((value) => USStateFilter(value))
+      )
+    }
   }
 }
