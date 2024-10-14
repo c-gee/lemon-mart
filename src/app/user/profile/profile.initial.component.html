@@ -115,6 +115,46 @@
               </mat-form-field>
             </div>
           </div>
+          <div fxLayout="row" fxLayout.lt-sm="column">
+            <mat-list formArrayName="phones">
+              <h2 mat-subheader>
+                Phone Number(s)
+                <button mat-button (click)="addPhone()">
+                  <mat-icon>add</mat-icon>
+                  Add Phone
+                </button>
+              </h2>
+              @for (position of phonesArray.controls; track position; let i = $index) {
+              <mat-list-item [formGroupName]="i">
+                <mat-form-field appearance="outline" fxFlex="100px">
+                  <mat-label>Type</mat-label>
+                  <mat-select formControlName="type">
+                    @for (type of PhoneTypes; track type) {
+                    <mat-option [value]="convertTypeToPhoneType(type)">
+                      {{ type }}
+                    </mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex fxFlexOffset="10px">
+                  <mat-label>Number</mat-label>
+                  <input matInput type="text" formControlName="digits"
+                    aria-label="Phone number" mask="(000) 000-0000" prefix="+1" />
+                  @if (
+                  phonesArray.controls[i].invalid && phonesArray.controls[i].touched
+                  ) {
+                  <mat-error> A valid phone number is required </mat-error>
+                  }
+                </mat-form-field>
+                <div fxLayoutAlign="center center" fxFlex="33px">
+                  <button mat-icon-button (click)="phonesArray.removeAt(i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </mat-list-item>
+              }
+            </mat-list>
+          </div>
         </div>
       </form>
     </mat-step>

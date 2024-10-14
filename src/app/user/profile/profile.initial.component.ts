@@ -1,7 +1,13 @@
 import { AsyncPipe } from '@angular/common'
 import { Component, DestroyRef, OnInit, inject } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms'
 import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import { MatButtonModule } from '@angular/material/button'
 import { MatNativeDateModule, MatOptionModule } from '@angular/material/core'
@@ -27,13 +33,14 @@ import {
   OneCharValidation,
   OptionalTextValidation,
   RequiredTextValidation,
+  USAPhoneNumberValidation,
   USAZipCodeValidation,
 } from '../../common/validations'
 import {
   ErrorSets,
   FieldErrorDirective,
 } from '../../user-controls/field-error/field-error.directive'
-import { IUser, PhoneType } from '../user/user'
+import { IPhone, IUser, PhoneType } from '../user/user'
 import { UserService } from '../user/user.service'
 import { IUSState, USStateFilter } from './data'
 
@@ -115,11 +122,15 @@ export class ProfileInitialComponent implements OnInit {
     return this.now.getFullYear() - this.dateOfBirth.getFullYear()
   }
 
+  get phonesArray(): FormArray {
+    return this.formGroup.get('phones') as FormArray
+  }
+
   buildForm(user?: IUser) {
     this.formGroup = this.formBuilder.group({
       email: [
         {
-          value: user?.email || '',
+          value: (user && user.email) || '',
           disabled: this.currentUserRole !== Role.Manager,
         },
         EmailValidation,
@@ -131,12 +142,12 @@ export class ProfileInitialComponent implements OnInit {
       }),
       role: [
         {
-          value: user?.role || '',
+          value: (user && user.role) || '',
           disabled: this.currentUserRole !== Role.Manager,
         },
-        [Validators.required],
+        Validators.required,
       ],
-      dateOfBirth: [(user && user?.dateOfBirth) || '', Validators.required],
+      dateOfBirth: [(user && user.dateOfBirth) || '', Validators.required],
       address: this.formBuilder.group({
         line1: [
           (user && user.address && user.address.line1) || '',
@@ -153,6 +164,7 @@ export class ProfileInitialComponent implements OnInit {
         ],
         zip: [(user && user.address && user.address.zip) || '', USAZipCodeValidation],
       }),
+      phones: this.formBuilder.array(this.buildPhoneArray(user?.phones || [])),
     })
 
     const state = this.formGroup.get('address.state')
@@ -163,5 +175,39 @@ export class ProfileInitialComponent implements OnInit {
         map((value) => USStateFilter(value))
       )
     }
+  }
+
+  addPhone() {
+    this.phonesArray.push(this.buildPhoneFormControl(this.phonesArray.value.length + 1))
+  }
+
+  convertTypeToPhoneType(type: string) {
+    return PhoneType[$enum(PhoneType).asKeyOrThrow(type)]
+  }
+
+  private buildPhoneFormControl(
+    id: number,
+    type?: string,
+    phoneNumber?: string
+  ): FormGroup {
+    return this.formBuilder.group({
+      id: [id],
+      type: [type || '', Validators.required],
+      digits: [phoneNumber || '', USAPhoneNumberValidation],
+    })
+  }
+
+  private buildPhoneArray(phones: IPhone[]) {
+    const groups: FormGroup[] = []
+
+    if (phones?.length === 0) {
+      groups.push(this.buildPhoneFormControl(1))
+    } else {
+      phones.forEach((p) => {
+        groups.push(this.buildPhoneFormControl(p.id, p.type, p.digits))
+      })
+    }
+
+    return groups
   }
 }
