@@ -158,6 +158,29 @@
         </div>
       </form>
     </mat-step>
+    <mat-step [stepControl]="formGroup">
+      <form [formGroup]="formGroup" (ngSubmit)="save(formGroup)">
+        <ng-template matStepLabel>Review</ng-template>
+        <div class="stepContent">
+          Review and update your user profile.
+          <app-view-user [user]="formGroup.getRawValue()"></app-view-user>
+        </div>
+        <div fxLayout="row" class="top-pad">
+          <button mat-button matStepperPrevious>Back</button>
+          <div class="flex-space"></div>
+          @if (userError) {
+          <div class="mat-caption error">{{ userError }}</div>
+          }
+          <button mat-button color="warn" (click)="stepper.reset()">
+            Reset
+          </button>
+          <button mat-raised-button matStepperNext color="primary" type="submit"
+            [disabled]="formGroup.invalid">
+            Update
+          </button>
+        </div>
+      </form>
+    </mat-step>
   </mat-horizontal-stepper>
 </div>
 }

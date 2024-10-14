@@ -22,7 +22,7 @@ import { MatStepperModule } from '@angular/material/stepper'
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { FlexModule } from '@ngbracket/ngx-layout'
 import { Observable } from 'rxjs'
-import { filter, map, startWith, tap } from 'rxjs/operators'
+import { filter, first, map, startWith, tap } from 'rxjs/operators'
 import { $enum } from 'ts-enum-util'
 
 import { Role } from '../../auth/auth.enum'
@@ -42,6 +42,7 @@ import {
 } from '../../user-controls/field-error/field-error.directive'
 import { IPhone, IUser, PhoneType } from '../user/user'
 import { UserService } from '../user/user.service'
+import { ViewUserComponent } from '../view-user/view-user.component'
 import { IUSState, USStateFilter } from './data'
 
 @Component({
@@ -69,6 +70,7 @@ import { IUSState, USStateFilter } from './data'
     ReactiveFormsModule,
     FieldErrorDirective,
     AsyncPipe,
+    ViewUserComponent,
   ],
 })
 export class ProfileInitialComponent implements OnInit {
@@ -183,6 +185,19 @@ export class ProfileInitialComponent implements OnInit {
 
   convertTypeToPhoneType(type: string) {
     return PhoneType[$enum(PhoneType).asKeyOrThrow(type)]
+  }
+
+  async save(form: FormGroup) {
+    this.userService
+      .updateUser(this.currentUserId, form.value)
+      .pipe(first())
+      .subscribe({
+        next: (res: IUser) => {
+          this.formGroup.patchValue(res)
+          this.uiService.showToast('Updated user')
+        },
+        error: (err: string) => (this.userError = err),
+      })
   }
 
   private buildPhoneFormControl(
