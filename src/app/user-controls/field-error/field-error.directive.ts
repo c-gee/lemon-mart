@@ -38,7 +38,7 @@ export class FieldErrorDirective implements OnDestroy, OnChanges {
   input: HTMLInputElement | undefined
 
   @Input()
-  group!: FormGroup
+  group!: AbstractControl | null
 
   @Input()
   fieldControl!: AbstractControl | null
@@ -65,9 +65,9 @@ export class FieldErrorDirective implements OnDestroy, OnChanges {
           this.input.placeholder ||
           this.input.getAttribute('aria-label') ||
           ''
+      } else {
+        throw new Error(`appFieldError.[input] couldn't bind to any input element`)
       }
-    } else {
-      throw new Error(`appFieldError.[input] couldn't bind to any input element`)
     }
   }
 
